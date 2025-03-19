@@ -7,7 +7,7 @@ class Window(QMainWindow):
         super().__init__(parent)
         self.calculator_widget = Calculator()
         self.setCentralWidget(self.calculator_widget)
-
+        self.setFixedSize(300, 410)
         self.historico = QListWidget()
         self.historico.setStyleSheet('''
                                      font-size: 20px;
@@ -19,14 +19,18 @@ class Window(QMainWindow):
         button_exit.triggered.connect(lambda: exit())
         button_historic = QAction(QIcon('1f4c4.png'), 'Histórico', self)
         button_historic.triggered.connect(lambda: self.Show_history())
+        button_new_calc = QAction(QIcon('1f4e2.png'), 'Nova Calculadora', self)
+        button_new_calc.triggered.connect(lambda: Calculator().show())
         main_tool.addMenu(file_tool)
-        file_tool.addActions([button_exit, button_historic])
+        file_tool.addActions([button_historic, button_new_calc, button_exit])
         self.setMenuBar(main_tool)
 
 
     def Show_history(self):
+        self.historico.clear()
+        print(self.calculator_widget.recent_operations)
         for c in self.calculator_widget.recent_operations:
-            self.historico.addItem(str(c))
+            self.historico.addItem(''.join(c))
         self.historico.show()
 
 
